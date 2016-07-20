@@ -82,13 +82,6 @@ class Object
   end
 end
 
-module MSpec
-  def self.opal_runner
-    @env = Object.new
-    @env.extend MSpec
-  end
-end
-
 class OSpecFormatter
   def self.main
     @main ||= self.new
@@ -119,7 +112,6 @@ class OSpecRunner
 
   def initialize
     register
-    run
   end
 
   def register
@@ -127,12 +119,10 @@ class OSpecRunner
     OSpecFilter.main.register
   end
 
-  def run
-    MSpec.opal_runner
-  end
-
-  def will_start
+  def start_suite
     MSpec.actions :start
+
+    MSpec.files
   end
 
   def bm!(repeat, bm_filepath)
